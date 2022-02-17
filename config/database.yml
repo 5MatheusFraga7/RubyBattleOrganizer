@@ -6,8 +6,8 @@ default: &default
   pool: 5
   host: localhost
   timeout: 5000
-  username: <%= '' %>
-  password: <%= '' %>
+  username: <%= 'rails' %>
+  password: <%= '1q2w3e' %>
   port: 5432
 
 development:
