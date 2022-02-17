@@ -35,8 +35,10 @@ gem 'bootstrap', '~> 4.6'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
+gem 'devise', '~> 4.3'
 
-gem 'devise'
+gem 'cancancan', '~> 1.15.0'
+
 gem 'rails_admin'
 
 group :development, :test do
