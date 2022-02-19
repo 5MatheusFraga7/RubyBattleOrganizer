@@ -131,6 +131,8 @@ GEM
     puma (3.12.6)
     racc (1.6.0)
     rack (2.2.3)
+    rack-cors (1.1.1)
+      rack (>= 2.0.0)
     rack-pjax (1.1.0)
       nokogiri (~> 1.5)
       rack (>= 1.1)
@@ -264,6 +266,7 @@ DEPENDENCIES
   listen (~> 3.0.5)
   pg (>= 0.18, < 2.0)
   puma (~> 3.0)
+  rack-cors
   rails (~> 5.0.7, >= 5.0.7.2)
   rails_admin
   rspec-rails
