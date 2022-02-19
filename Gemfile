@@ -36,10 +36,11 @@ gem 'bootstrap', '~> 4.6'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 gem 'devise', '~> 4.3'
-
 gem 'cancancan', '~> 1.15.0'
 
 gem 'rails_admin'
+
+gem 'rack-cors'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
