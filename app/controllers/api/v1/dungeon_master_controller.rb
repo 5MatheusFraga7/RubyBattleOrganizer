@@ -27,6 +27,30 @@ class Api::V1::DungeonMasterController < ApplicationController
 
     def update 
 
+        if (current_user.nil?)
+            render json: { status: 'Unauthorized Access' }, status: 401
+        end
+
+        if (params[:id].nil?)
+            render json: { status: 'Invalid Params' }, status: 422
+        end
+
+        dm = DungeonMaster.where(id: params[:id].to_i, user_id: current_user.id).first
+
+        if ((dm.present?) && (dm.update_attributes(dungeon_master_params)))
+
+            render json: { status: 'Updated Success', dungeon_master: dm }, status: 201 
+
+        elsif (dm.nil?)
+
+            render json: { status: 'Dungeon master not found' }, status: 404
+
+        else
+
+            render json: { status: 'Saving Error', errors: dm.errors }, status: 422
+
+        end
+
     end
 
     private  
