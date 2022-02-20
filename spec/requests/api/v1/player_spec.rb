@@ -21,5 +21,17 @@ RSpec.describe 'PlayerController' do
 
     end
 
+    describe 'POST CREATE' do
 
+        let!(:player_attributes) { FactoryBot.attributes_for(:player, user_id: user.id) }
+
+        before do 
+            post "/api/v1/player", params: { player: player_attributes }.to_json, headers: headers
+        end
+        
+        it 'status code 201' do 
+            expect(response).to have_http_status(201)
+        end
+
+    end
 end
