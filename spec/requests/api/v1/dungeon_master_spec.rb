@@ -56,12 +56,20 @@ RSpec.describe 'DungeonMasterController' do
     describe 'PUT UPDATE' do 
 
         let(:dungeon_master) { FactoryBot.create(:dungeon_master, user_id: user.id) }
-        let(:dungeon_master_attributes) { { name: 'New name updated' } }
-    
-        it 'status code 201' do 
+        let(:dungeon_master_attributes) { { name: 'New name updated--------------' } }
 
+        before do 
             put "/api/v1/dungeon_master/#{dungeon_master.id}", params: { dungeon_master: dungeon_master_attributes }.to_json, headers: headers
+        end
+
+        it 'status code 201' do 
             expect(response).to have_http_status(201)
+        end
+
+        it 'updated dungeon master in database' do
+            
+            expect(DungeonMaster.where(name: dungeon_master_attributes[:name])).not_to be_nil 
+
         end
     
     end 
