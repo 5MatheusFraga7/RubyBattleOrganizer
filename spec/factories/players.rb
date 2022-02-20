@@ -1,8 +1,8 @@
 FactoryBot.define do
   factory :player do
-    user { nil }
-    name { "MyString" }
-    profile_picture_url { "MyString" }
-    dungeon_master { nil }
+    user 
+    name { Faker::JapaneseMedia::OnePiece.character }
+    profile_picture_url { "-------------" }
+    dungeon_master
   end
 end
