@@ -25,6 +25,17 @@ RSpec.describe 'DungeonMasterController' do
     
     end
 
+    describe 'GET SHOW' do 
+
+        let(:dungeon_master) { FactoryBot.create(:dungeon_master) }
+
+        it 'statuc code 200' do 
+            get "/api/v1/dungeon_master/#{ dungeon_master.id }", params: { }, headers: headers
+            expect(response).to have_http_status(200) 
+        end 
+
+    end 
+
     describe 'POST CREATE' do 
 
         let(:dungeon_master) { FactoryBot.attributes_for(:dungeon_master) }
@@ -41,4 +52,12 @@ RSpec.describe 'DungeonMasterController' do
             expect(DungeonMaster.where(name: dungeon_master[:name]).first).not_to be_nil
         end
     end
+
+    describe 'PUT UPDATE' do 
+    
+        it '' do 
+            
+        end
+    
+    end 
 end 

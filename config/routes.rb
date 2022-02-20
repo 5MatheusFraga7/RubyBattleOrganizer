@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: { format: :json }, path: '/api' do 
     namespace :v1, path: '/v1' do
-      resources :dungeon_master, only: [:index, :create]
+      resources :dungeon_master, only: [:index, :create, :show, :put]
     end
   end
 

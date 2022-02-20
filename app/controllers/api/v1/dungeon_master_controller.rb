@@ -11,11 +11,22 @@ class Api::V1::DungeonMasterController < ApplicationController
 
     end
 
+    def show 
+
+        dm = DungeonMaster.where(id: params[:id], user_id: current_user.id)
+        render json: dm, status: 200
+
+    end
+
     def create 
 
         dm = DungeonMaster.create(dungeon_master_params)
         render json: { status: "created", dungeon_master: dm }, status: 201
         
+    end
+
+    def update 
+
     end
 
     private  
