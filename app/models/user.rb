@@ -7,7 +7,7 @@ class User < ApplicationRecord
   belongs_to :role
 
   validates_uniqueness_of :auth_token
-  before_create :generate_auth_token!
+  before_create :generate_authentication_token!
 
   def generate_authentication_token!
 
@@ -18,7 +18,11 @@ class User < ApplicationRecord
   end
 
   def admin?
-    self.role_id == 1 # If you have id == 1 for admin
+    
+    # If you have id == 1 for admin
+    # If you have id == 2 for sample
+
+    self.role_id == 1 
   end
 
 end
