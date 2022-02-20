@@ -73,4 +73,24 @@ RSpec.describe 'DungeonMasterController' do
         end
     
     end 
+
+    describe 'DELETE ACTION' do
+        
+        let!(:dungeon_master) { FactoryBot.create(:dungeon_master, user_id: user.id) }
+
+        before do 
+            delete "/api/v1/dungeon_master/#{dungeon_master.id}", params: { }.to_json, headers: headers
+        end 
+
+        it 'status code 204' do
+            expect(response).to have_http_status(204)
+
+        end
+
+        it 'dungeon removed!' do
+            expect(DungeonMaster.find_by(id: dungeon_master.id)).to be_nil
+        end
+
+    end 
+
 end 

@@ -53,6 +53,27 @@ class Api::V1::DungeonMasterController < ApplicationController
 
     end
 
+    def destroy 
+
+        dm = DungeonMaster.where(user_id: current_user.id, id: params[:id]).first
+
+        if (dm.nil?)
+   
+            render json: { status: 'Dungeon master not found' }, status: 404
+
+        end
+
+        if (dm.destroy)
+
+            head 204
+
+        else
+
+            render json: { status: 'Error in destroy dungeon master', errors: dm.errors }, status: 422
+        end
+    
+    end
+        
     private  
 
 	def dungeon_master_params 
