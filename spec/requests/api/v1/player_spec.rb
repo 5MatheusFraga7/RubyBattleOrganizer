@@ -62,7 +62,16 @@ RSpec.describe 'PlayerController' do
 
     describe 'PUT UPDATE' do 
 
-        
+        let!(:player) { FactoryBot.create(:player, user_id: user.id) }
+        let(:player_params) { { name: ' Nome atualizado ' } }
+
+        before do 
+            put "/api/v1/player/#{ player.id }", params: { player: player_params }.to_json, headers: headers
+        end 
+
+        it 'status code 201' do 
+            expect(response).to have_http_status(201)
+        end
         
     end 
 
