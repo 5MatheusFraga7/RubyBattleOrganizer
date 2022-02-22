@@ -2,7 +2,7 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
 
     def create_battlefield
 
-        dm = ::DungeonMaster.where(user_id: current_user.id, id: params[:id])
+        dm = ::DungeonMaster.where(user_id: current_user.id, id: params[:battle_field][:dungeon_master_id].to_i).first
 
         if (dm.nil?) 
 
@@ -13,7 +13,7 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
 
         battle_field = ::BattleField.new(battle_field_params)
 
-        if (battle_field.present?)
+        if (battle_field.save)
             
             render json: { battle_field: battle_field }, status: 201
 
@@ -42,12 +42,6 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
             render json: { status: 'Invalid Params' }, status: 422
         end
 
-
-        if ()
-
-
-        end
-
     end
 
     def destroy_battle_field
@@ -58,7 +52,7 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
     private  
 
 	def battle_field_params 
-		params.require(:battle_field).permit(:dungeon_master_id, :title)	
+		params.require(:battle_field).permit(:title, :dungeon_master_id)	
 	end
 
 end
