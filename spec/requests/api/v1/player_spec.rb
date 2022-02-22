@@ -13,7 +13,6 @@ RSpec.describe 'PlayerController' do
     describe 'GET INDEX' do
 
         it 'status code 200' do
-            
             get '/api/v1/player', params: {}, headers: headers
             expect(response).to have_http_status(200)
 
@@ -33,5 +32,38 @@ RSpec.describe 'PlayerController' do
             expect(response).to have_http_status(201)
         end
 
+        it 'insert into database' do 
+            expect(Player.where(user_id: user.id, name: player_attributes[:name])).not_to be_nil 
+        end 
+
     end
+
+    describe 'GET SHOW' do 
+
+        let!(:player) { FactoryBot.create(:player, user_id: user.id) }
+
+        before do 
+            get "/api/v1/player/#{ player.id }", params: {  }, headers: headers
+        end 
+
+        it 'status code 200' do
+            expect(response).to have_http_status(200)
+        end
+
+        it 'returns player json' do
+
+            require 'json'
+            json = JSON.parse(response.body)
+
+            expect(json['player']['name']).to eq(player.name)
+
+        end
+    end
+
+    describe 'PUT UPDATE' do 
+
+        
+        
+    end 
+
 end

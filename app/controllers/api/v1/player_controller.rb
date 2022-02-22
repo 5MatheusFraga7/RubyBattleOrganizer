@@ -24,6 +24,22 @@ class Api::V1::PlayerController < ApplicationController
 
     end
 
+    def show 
+
+        player = Player.where(id: params[:id], user_id: current_user.id).first
+
+        if (player.present?)
+            
+            render json: { status: 'success', player: player }, status: 200
+
+        else
+
+            render json: { status: 'player not found' }, status: 404
+
+        end
+
+    end
+
     private 
 
     def player_params
