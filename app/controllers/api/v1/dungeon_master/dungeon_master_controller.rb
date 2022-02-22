@@ -1,5 +1,7 @@
 class Api::V1::DungeonMaster::DungeonMasterController < ApplicationController
 
+    include DungeonMasterBattlefield
+
     before_action :authenticate_with_token!
 
     def index 
