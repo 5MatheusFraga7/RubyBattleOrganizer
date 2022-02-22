@@ -40,6 +40,29 @@ class Api::V1::PlayerController < ApplicationController
 
     end
 
+    def update 
+
+        player = Player.where(id: params[:id], user_id: current_user.id).first
+
+        if (player.nil?)
+            
+            render json: { status: 'player not found' }, status: 404
+            return
+
+        end
+
+        if (player.update_attributes(player_params))
+
+            render json: { status: 'Updated player', player: player }, status: 201
+
+        else
+
+            render json: { status: 'saving error', errors: player.errors }, status: 422
+ 
+        end
+
+    end
+
     private 
 
     def player_params
