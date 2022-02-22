@@ -18,7 +18,7 @@ RSpec.describe 'DungeonMasterController' do
 
         it 'status code 200' do 
 
-            get '/api/v1/dungeon_master', params: { user_id: User.first.id }, headers: headers
+            get '/api/v1/dungeon_master/dungeon_master', params: {  }, headers: headers
             expect(response).to have_http_status(200)
         
         end 
@@ -30,7 +30,7 @@ RSpec.describe 'DungeonMasterController' do
         let(:dungeon_master) { FactoryBot.create(:dungeon_master) }
 
         it 'statuc code 200' do 
-            get "/api/v1/dungeon_master/#{ dungeon_master.id }", params: { }, headers: headers
+            get "/api/v1/dungeon_master/dungeon_master/#{ dungeon_master.id }", params: { }, headers: headers
             expect(response).to have_http_status(200) 
         end 
 
@@ -41,7 +41,7 @@ RSpec.describe 'DungeonMasterController' do
         let(:dungeon_master) { FactoryBot.attributes_for(:dungeon_master) }
 
         before do 
-            post '/api/v1/dungeon_master', params: { dungeon_master: dungeon_master }.to_json, headers: headers
+            post '/api/v1/dungeon_master/dungeon_master', params: { dungeon_master: dungeon_master }.to_json, headers: headers
         end 
 
         it 'status code 201' do
@@ -59,7 +59,7 @@ RSpec.describe 'DungeonMasterController' do
         let(:dungeon_master_attributes) { { name: 'New name updated--------------' } }
 
         before do 
-            put "/api/v1/dungeon_master/#{dungeon_master.id}", params: { dungeon_master: dungeon_master_attributes }.to_json, headers: headers
+            put "/api/v1/dungeon_master/dungeon_master/#{dungeon_master.id}", params: { dungeon_master: dungeon_master_attributes }.to_json, headers: headers
         end
 
         it 'status code 201' do 
@@ -79,7 +79,7 @@ RSpec.describe 'DungeonMasterController' do
         let!(:dungeon_master) { FactoryBot.create(:dungeon_master, user_id: user.id) }
 
         before do 
-            delete "/api/v1/dungeon_master/#{dungeon_master.id}", params: { }.to_json, headers: headers
+            delete "/api/v1/dungeon_master/dungeon_master/#{dungeon_master.id}", params: { }.to_json, headers: headers
         end 
 
         it 'status code 204' do

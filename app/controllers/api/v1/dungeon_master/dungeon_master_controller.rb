@@ -1,12 +1,10 @@
-class Api::V1::DungeonMasterController < ApplicationController
+class Api::V1::DungeonMaster::DungeonMasterController < ApplicationController
 
     before_action :authenticate_with_token!
 
     def index 
 
-        user_id = (current_user.nil?) ? params[:user_id].to_i : current_user.id
-
-        dm =  DungeonMaster.where(user_id: user_id)
+        dm =  ::DungeonMaster.where(user_id: current_user.id)
         render json: { status: 'success', dungeon_master: dm }, status: 200
 
     end
