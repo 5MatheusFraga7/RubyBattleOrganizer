@@ -75,4 +75,22 @@ RSpec.describe 'PlayerController' do
         
     end 
 
+    describe 'DESTROY' do 
+
+        let!(:player) { FactoryBot.create(:player, user_id: user.id) }
+
+        before do 
+            delete "/api/v1/player/#{ player.id }", params: { }, headers: headers
+        end 
+
+        it 'status code 204' do
+            expect(response).to have_http_status(204)
+        end
+
+        it 'removes player from database' do 
+            expect(Player.where(id: player.id).present?).to be false
+        end
+
+    end  
+
 end

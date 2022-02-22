@@ -63,6 +63,29 @@ class Api::V1::PlayerController < ApplicationController
 
     end
 
+    def destroy 
+
+        player = Player.where(id: params[:id], user_id: current_user.id).first
+
+        if (player.nil?)
+
+            render json: { status: 'player not found' }, status: 404
+            return
+
+        end
+        
+        if (player.destroy)
+
+            head 204
+
+        else
+
+            render json: { status: 'destroy error', errors: player.errors }, status: 500
+
+        end
+
+    end
+
     private 
 
     def player_params
