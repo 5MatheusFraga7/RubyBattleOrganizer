@@ -164,6 +164,70 @@ RSpec.describe 'DungeonMasterController' do
 
     end 
 
+    context 'DM PLAYER' do 
+
+        describe 'POST CREATE PLAYER' do 
+
+            let(:player) { FactoryBot.create(:player, dungeon_master_id: dungeon_master_test.id) }
+
+            it  'status code 201' do 
+    
+                post '/api/v1/dungeon_master/create_player', params: { player: player }.to_json, headers: headers
+                expect(response).to have_http_status(201)
+            end 
+    
+        end
+
+        describe 'GET SHOW PLAYER' do 
+
+            let(:player) { FactoryBot.create(:player, dungeon_master_id: dungeon_master_test.id) }
+    
+            it 'status code 200' do 
+                get "/api/v1/dungeon_master/show_players", params: { dungeon_master_id: dungeon_master_test.id }, headers: headers
+                expect(response).to have_http_status(200) 
+            end 
+        end 
+    
+        describe 'PUT UPDATE PLAYER' do 
+    
+            let(:player) { FactoryBot.create(:player, dungeon_master_id: dungeon_master_test.id) }
+            let(:player_attributes) { { title: 'New title updated--------------' } }
+    
+            before do 
+                put "/api/v1/dungeon_master/update_player/#{player.id}", params: { player: player_attributes, dungeon_master_id: dungeon_master_test.id }.to_json, headers: headers
+            end
+    
+            it 'status code 201' do 
+                expect(response).to have_http_status(201)
+            end
+    
+            it 'updated battle_field master in database' do
+                
+                expect(Player.where(title: player_attributes[:name])).not_to be_nil 
+            end
+        
+        end 
+    
+        describe 'DELETE ACTION BATTLEFIELD' do
+            
+            let(:player) { FactoryBot.create(:player, dungeon_master_id: dungeon_master_test.id) }
+    
+            before do 
+                delete "/api/v1/dungeon_master/destroy_player/#{player.id}", params: { dungeon_master_id: dungeon_master_test.id }.to_json, headers: headers
+            end 
+    
+            it 'status code 204' do
+                expect(response).to have_http_status(204)
+            end
+    
+            it 'field removed!' do
+                expect(Player.find_by(id: player.id)).to be_nil
+            end
+    
+        end 
+
+    end 
+
     
 
 end 

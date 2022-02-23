@@ -2,7 +2,7 @@ module Api::V1::DungeonMaster::DungeonMasterPlayer
 
     def create_player
 
-        dm = ::DungeonMaster.where(user_id: current_user.id, id: params[:battle_field][:dungeon_master_id].to_i).first
+        dm = ::DungeonMaster.where(user_id: current_user.id, id: params[:player][:dungeon_master_id].to_i).first
 
         if (dm.nil?) 
 
@@ -11,15 +11,15 @@ module Api::V1::DungeonMaster::DungeonMasterPlayer
 
         end
 
-        battle_field = ::BattleField.new(battle_field_params)
+        player = ::Player.new(player_params)
 
-        if (battle_field.save)
+        if (player.save)
             
-            render json: { battle_field: battle_field }, status: 201
+            render json: { player: player }, status: 201
 
         else
 
-            render json: { status: 'saving error', errors: battle_field.errors }, status: 422
+            render json: { status: 'saving error', errors: player.errors }, status: 422
 
         end
 
@@ -35,11 +35,11 @@ module Api::V1::DungeonMaster::DungeonMasterPlayer
             return
         end
 
-        render json: { status: 'success', battle_fields: dm.battle_fields }, status: 200
+        render json: { status: 'success', players: dm.players }, status: 200
 
     end
 
-    def update_players
+    def update_player
 
         if (current_user.nil?)
             render json: { status: 'Unauthorized Access' }, status: 401
@@ -59,27 +59,27 @@ module Api::V1::DungeonMaster::DungeonMasterPlayer
             return
         end
 
-        battle_field = dm.battle_fields.where(id: params[:id]).first
+        player = dm.players.where(id: params[:id]).first
 
-        if (!battle_field.present?)
+        if (!player.present?)
 
-            render json: { status: 'battle field not present' }, status: 422
+            render json: { status: 'player not present' }, status: 422
             return
         end
 
-       if (battle_field.update_attributes(battle_field_params))
+       if (player.update_attributes(player_params))
 
-         render json: { status: 'battle field updated', battle_field:battle_field  }, status: 201
+         render json: { status: 'player updated', player: player }, status: 201
 
        else
 
-         render json: { status: 'saving errors', errors: battle_field.errors }, status: 422
+         render json: { status: 'saving errors', errors: player.errors }, status: 422
 
        end
 
     end
 
-    def destroy_players
+    def destroy_player
 
         dm = current_user.get_dungeon_master(params[:dungeon_master_id])
 
@@ -89,21 +89,21 @@ module Api::V1::DungeonMaster::DungeonMasterPlayer
 
         end
 
-        battle_field = dm.battle_fields.where(id: params[:id]).first
+        player = dm.players.where(id: params[:id]).first
 
-        if (!battle_field.present?)
+        if (!player.present?)
 
-            render json: { status: 'battle field not present' }, status: 422
+            render json: { status: 'player not present' }, status: 422
             return
         end
 
-        if (battle_field.destroy)
+        if (player.destroy)
 
             head 204
 
         else
 
-            render json: { status: 'destroy error', errors: battle_field.errors }, status: 422
+            render json: { status: 'destroy error', errors: player.errors }, status: 422
  
         end
 
@@ -112,7 +112,7 @@ module Api::V1::DungeonMaster::DungeonMasterPlayer
     private  
 
 	def player_params 
-		params.require(:battle_field).permit(:title, :dungeon_master_id)	
+		params.require(:player).permit(:name, :dungeon_master_id)	
 	end
 
 end
