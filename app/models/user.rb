@@ -6,6 +6,9 @@ class User < ApplicationRecord
 
   belongs_to :role
 
+  has_many :dungeon_masters
+  has_many :players
+
   validates_uniqueness_of :auth_token
   before_create :generate_authentication_token!
 
@@ -23,6 +26,18 @@ class User < ApplicationRecord
     # If you have id == 2 for sample
 
     self.role_id == 1 
+  end
+
+  def get_dungeon_master(dungeon_master_id)
+
+    if (dungeon_master_id.nil?)
+
+      return []
+
+    end
+
+    self.dungeon_masters.where(id: dungeon_master_id.to_i).first
+
   end
 
 end
