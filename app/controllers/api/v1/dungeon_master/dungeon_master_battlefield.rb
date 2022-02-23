@@ -27,8 +27,15 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
 
     def show_battle_fields
 
-        dm = DungeonMaster.where(id: params[:id], user_id: current_user.id)
-        render json: dm, status: 200
+        dm = current_user.get_dungeon_master(params[:dungeon_master_id])
+        
+        if (!dm.present?)
+
+            render json: { status: 'dungeon master not found' }, status: 404
+            return
+        end
+
+        render json: { status: 'success', battle_fields: dm.battle_fields }, status: 200
 
     end
 
@@ -36,17 +43,45 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
 
         if (current_user.nil?)
             render json: { status: 'Unauthorized Access' }, status: 401
+            return
         end
 
         if (params[:id].nil?)
             render json: { status: 'Invalid Params' }, status: 422
+            return
         end
+
+        dm = current_user.get_dungeon_master(params[:dungeon_master_id])
+
+        if (!dm.present?) 
+
+            render json: { status: 'dungeon master not found' }, status: 404
+            return
+        end
+
+        battle_field = dm.battle_fields.where(id: params[:id]).first
+
+        if (!battle_field.present?)
+
+            render json: { status: 'battle field not present' }, status: 422
+            return
+        end
+
+       if (battle_field.update_attributes(battle_field_params))
+
+         render json: { status: 'battle field updated', battle_field:battle_field  }, status: 201
+
+       else
+
+         render json: { status: 'saving errors', errors: battle_field.errors }, status: 422
+
+       end
 
     end
 
     def destroy_battle_field
 
-    
+        
     end
         
     private  
