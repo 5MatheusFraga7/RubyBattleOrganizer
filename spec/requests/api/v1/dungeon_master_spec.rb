@@ -140,33 +140,28 @@ RSpec.describe 'DungeonMasterController' do
             it 'updated battle_field master in database' do
                 
                 expect(BattleField.where(title: battle_field_attributes[:name])).not_to be_nil 
-    
             end
         
         end 
     
-        describe 'DELETE ACTION' do
+        describe 'DELETE ACTION BATTLEFIELD' do
             
-            # let!(:dungeon_master) { FactoryBot.create(:dungeon_master, user_id: user.id) }
+            let(:battle_field) { FactoryBot.create(:battle_field, dungeon_master_id: dungeon_master_test.id) }
     
-            # before do 
-            #     delete "/api/v1/dungeon_master/dungeon_master/#{dungeon_master.id}", params: { }.to_json, headers: headers
-            # end 
+            before do 
+                delete "/api/v1/dungeon_master/destroy_battle_field/#{battle_field.id}", params: { dungeon_master_id: dungeon_master_test.id }.to_json, headers: headers
+            end 
     
-            # it 'status code 204' do
-            #     expect(response).to have_http_status(204)
+            it 'status code 204' do
+                expect(response).to have_http_status(204)
+            end
     
-            # end
-    
-            # it 'dungeon removed!' do
-            #     expect(DungeonMaster.find_by(id: dungeon_master.id)).to be_nil
-            # end
+            it 'field removed!' do
+                expect(BattleField.find_by(id: battle_field.id)).to be_nil
+            end
     
         end 
 
-        
-    
     end 
-
 
 end 

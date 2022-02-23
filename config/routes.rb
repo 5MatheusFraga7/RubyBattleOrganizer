@@ -13,10 +13,11 @@ Rails.application.routes.draw do
 
         resources :dungeon_master, only: [:index, :create, :show, :update, :destroy]
 
-        post 'create_battlefield'      => "dungeon_master#create_battlefield"
-        get  'show_battle_fields'      => "dungeon_master#show_battle_fields"
-        put  'update_battle_field/:id' => "dungeon_master#update_battle_field"
-       
+        post   'create_battlefield'       => "dungeon_master#create_battlefield"
+        get    'show_battle_fields'       => "dungeon_master#show_battle_fields"
+        put    'update_battle_field/:id'  => "dungeon_master#update_battle_field"
+        delete 'destroy_battle_field/:id' => "dungeon_master#destroy_battle_field"
+
       end
 
       resources :player, only: [:index, :create, :show, :update, :destroy]

@@ -81,7 +81,32 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
 
     def destroy_battle_field
 
-        
+        dm = current_user.get_dungeon_master(params[:dungeon_master_id])
+
+        if (!dm.present?) 
+            render json: { status: 'dungeon master not found' }, status: 404
+            return      
+
+        end
+
+        battle_field = dm.battle_fields.where(id: params[:id]).first
+
+        if (!battle_field.present?)
+
+            render json: { status: 'battle field not present' }, status: 422
+            return
+        end
+
+        if (battle_field.destroy)
+
+            head 204
+
+        else
+
+            render json: { status: 'destroy error', errors: battle_field.errors }, status: 422
+ 
+        end
+
     end
         
     private  
