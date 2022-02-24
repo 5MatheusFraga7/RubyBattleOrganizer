@@ -27,6 +27,13 @@ Rails.application.routes.draw do
         put    'update_player/:id'  => "dungeon_master#update_player"
         delete 'destroy_player/:id' => "dungeon_master#destroy_player"
 
+        # Monster
+
+        post   'create_monster'      => "dungeon_master#create_monster"
+        get    'show_monsters'       => "dungeon_master#show_monsters"
+        put    'update_monster/:id'  => "dungeon_master#update_monster"
+        delete 'destroy_monster/:id' => "dungeon_master#destroy_monster"
+
       end
 
       resources :player, only: [:index, :create, :show, :update, :destroy]

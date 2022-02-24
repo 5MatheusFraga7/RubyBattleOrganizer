@@ -228,6 +228,69 @@ RSpec.describe 'DungeonMasterController' do
 
     end 
 
+    context 'DM MONSTER' do 
+
+        describe 'POST CREATE MONSTER' do 
+
+            let(:dm_monster) { FactoryBot.create(:dm_monster, dungeon_master_id: dungeon_master_test.id) }
+
+            it  'status code 201' do 
+    
+                post '/api/v1/dungeon_master/create_monster', params: { dm_monster: dm_monster }.to_json, headers: headers
+                expect(response).to have_http_status(201)
+            end 
+    
+        end
+
+        describe 'GET SHOW MONSTER' do 
+
+            let(:dm_monster) { FactoryBot.create(:dm_monster, dungeon_master_id: dungeon_master_test.id) }
+    
+            it 'status code 200' do 
+                get "/api/v1/dungeon_master/show_monsters", params: { dungeon_master_id: dungeon_master_test.id }, headers: headers
+                expect(response).to have_http_status(200) 
+            end 
+        end 
+    
+        describe 'PUT UPDATE MONSTER' do 
+    
+            let(:dm_monster) { FactoryBot.create(:dm_monster, dungeon_master_id: dungeon_master_test.id) }
+            let(:dm_monster_attributes) { { title: 'New title updated--------------' } }
+    
+            before do 
+                put "/api/v1/dungeon_master/update_monster/#{dm_monster.id}", params: { dm_monster: dm_monster_attributes, dungeon_master_id: dungeon_master_test.id }.to_json, headers: headers
+            end
+    
+            it 'status code 201' do 
+                expect(response).to have_http_status(201)
+            end
+    
+            it 'updated battle_field master in database' do
+                
+                expect(DmMonster.where(title: dm_monster_attributes[:name])).not_to be_nil 
+            end
+        
+        end 
+    
+        describe 'DELETE ACTION MONSTER' do
+            
+            let(:dm_monster) { FactoryBot.create(:dm_monster, dungeon_master_id: dungeon_master_test.id) }
+    
+            before do 
+                delete "/api/v1/dungeon_master/destroy_monster/#{dm_monster.id}", params: { dungeon_master_id: dungeon_master_test.id }.to_json, headers: headers
+            end 
+    
+            it 'status code 204' do
+                expect(response).to have_http_status(204)
+            end
+    
+            it 'field removed!' do
+                expect(DmMonster.find_by(id: dm_monster.id)).to be_nil
+            end
+    
+        end 
+
+    end 
     
 
 end 
