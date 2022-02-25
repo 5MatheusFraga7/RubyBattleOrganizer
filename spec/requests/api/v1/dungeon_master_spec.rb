@@ -8,6 +8,7 @@ RSpec.describe 'DungeonMasterController' do
     
     let!(:user) { FactoryBot.create(:user) }
     let!(:dungeon_master_test) { FactoryBot.create(:dungeon_master, user_id: user.id) }
+    let(:battle_field_test) { FactoryBot.create(:battle_field, dungeon_master_id: dungeon_master_test.id ) }
 
     let(:headers) do 
         {
@@ -289,6 +290,42 @@ RSpec.describe 'DungeonMasterController' do
             end
     
         end 
+        
+
+    end 
+
+    context 'DM PLAYER-BATTLEFIELD' do 
+
+        describe 'POST CREATE PLAYER-BATTLEFIELD' do 
+
+            let(:player_battle_field) { FactoryBot.create(:player_battle_field, dungeon_master_id: dungeon_master_test.id, battle_field_id: battle_field_test.id) }
+
+            it  'status code 201' do 
+    
+                post '/api/v1/dungeon_master/create_player_battle_field', params: { player_battle_field: player_battle_field, battle_field_id: battle_field_test.id }.to_json, headers: headers
+                expect(response).to have_http_status(201)
+            end 
+    
+        end
+    
+        describe 'DELETE ACTION PLAYER-BATTLEFIELD' do
+            
+            let(:player_battle_field) { FactoryBot.create(:player_battle_field, dungeon_master_id: dungeon_master_test.id, battle_field_id: battle_field_test.id) }
+    
+            before do 
+                delete "/api/v1/dungeon_master/destroy_player_battle_field/#{player_battle_field.id}", params: { dungeon_master_id: dungeon_master_test.id, battle_field_id: battle_field_test.id }.to_json, headers: headers
+            end 
+    
+            it 'status code 204' do
+                expect(response).to have_http_status(204)
+            end
+    
+            it 'field removed!' do
+                expect(PlayerBattleField.find_by(id: player_battle_field.id)).to be_nil
+            end
+    
+        end 
+        
 
     end 
     
