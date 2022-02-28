@@ -4,6 +4,7 @@ class Api::V1::DungeonMaster::DungeonMasterController < ApplicationController
     include DungeonMasterPlayer
     include DungeonMasterMonster
     include DungeonMasterPlayerBattleField
+    include DungeonMasterMonsterBattleField
 
     before_action :authenticate_with_token!
 
