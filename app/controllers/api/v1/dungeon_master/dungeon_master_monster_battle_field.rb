@@ -2,7 +2,7 @@ module Api::V1::DungeonMaster::DungeonMasterMonsterBattleField
 
     def create_monster_battle_field
 
-        dm = ::DungeonMaster.where(user_id: current_user.id, id: params[:monster_battle_field][:dungeon_master_id].to_i).first
+        dm = current_user.get_dungeon_master(params[:dungeon_master_id])
 
         if (dm.nil?) 
 
@@ -35,13 +35,21 @@ module Api::V1::DungeonMaster::DungeonMasterMonsterBattleField
 
         end
 
-        monster_battle_field = dm.monster_battle_fields.where(id: params[:id]).first
+        monster_battle_field = MonsterBattleField.where(id: params[:id]).first
 
-        if (!monster_battle_field.present?)
+        if (monster_battle_field.nil?)
+            render json: { status: 'monster_battle_field not found' }, status: 404
+            return   
 
-            render json: { status: 'dungeon not present' }, status: 422
-            return
         end
+
+        monster       = ::DmMonster.where(id: monster_battle_field.dm_monster_id, dungeon_master_id: params[:dungeon_master_id].to_i)
+        battle_field  = ::BattleField.where(id: monster_battle_field.battle_field_id, dungeon_master_id: params[:dungeon_master_id].to_i)
+
+        if ((monster.nil?) || (battle_field.nil?))
+            render json: { status: 'Ilegal relation of monster or battle_field and dm' }, status: 404
+            return         
+        end 
 
         if (monster_battle_field.destroy)
 
@@ -58,7 +66,7 @@ module Api::V1::DungeonMaster::DungeonMasterMonsterBattleField
     private  
 
 	def monster_battle_field_params 
-		params.require(:monster_battle_field).permit(:monster_id, :battle_field_id)	
+		params.require(:monster_battle_field).permit(:dm_monster_id, :battle_field_id)	
 	end
 
 end
