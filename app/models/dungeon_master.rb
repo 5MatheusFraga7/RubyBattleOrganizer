@@ -6,7 +6,6 @@ class DungeonMaster < ApplicationRecord
   has_many   :dm_monsters
 
   has_many   :battle_fields
-  has_many   :player_battle_fields
   has_many   :monster_battle_fields
 
   validates :user_id, presence: true 

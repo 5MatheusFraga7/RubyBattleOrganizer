@@ -2,7 +2,7 @@ module Api::V1::DungeonMaster::DungeonMasterPlayerBattleField
 
     def create_player_battle_field
 
-        dm = ::DungeonMaster.where(user_id: current_user.id, id: params[:player_battle_field][:dungeon_master_id].to_i).first
+        dm = current_user.get_dungeon_master(params[:dungeon_master_id])
 
         if (dm.nil?) 
 
@@ -35,13 +35,21 @@ module Api::V1::DungeonMaster::DungeonMasterPlayerBattleField
 
         end
 
-        player_battle_field = dm.player_battle_fields.where(id: params[:id]).first
+        player_battle_field = PlayerBattleField.where(id: params[:id]).first
 
-        if (!player_battle_field.present?)
+        if (player_battle_field.nil?)
+            render json: { status: 'player_battle_field not found' }, status: 404
+            return   
 
-            render json: { status: 'dungeon not present' }, status: 422
-            return
         end
+
+        player       = Player.where(id: player_battle_field.player_id, dungeon_master_id: params[:dungeon_master_id].to_i)
+        battle_field = BattleField.where(id: player_battle_field.battle_field_id, dungeon_master_id: params[:dungeon_master_id].to_i)
+
+        if ((player.nil?) || (battle_field.nil?))
+            render json: { status: 'Ilegal relation of player or battle_field and dm' }, status: 404
+            return         
+        end 
 
         if (player_battle_field.destroy)
 
