@@ -17,14 +17,14 @@ class Api::V1::DungeonMaster::DungeonMasterController < ApplicationController
 
     def show 
 
-        dm = DungeonMaster.where(id: params[:id], user_id: current_user.id)
+        dm = ::DungeonMaster.where(id: params[:id], user_id: current_user.id)
         render json: dm, status: 200
 
     end
 
     def create 
 
-        dm = DungeonMaster.create(dungeon_master_params)
+        dm = ::DungeonMaster.create(dungeon_master_params)
         render json: { status: "created", dungeon_master: dm }, status: 201
         
     end
@@ -39,7 +39,7 @@ class Api::V1::DungeonMaster::DungeonMasterController < ApplicationController
             render json: { status: 'Invalid Params' }, status: 422
         end
 
-        dm = DungeonMaster.where(id: params[:id].to_i, user_id: current_user.id).first
+        dm = ::DungeonMaster.where(id: params[:id].to_i, user_id: current_user.id).first
 
         if ((dm.present?) && (dm.update_attributes(dungeon_master_params)))
 
@@ -59,7 +59,7 @@ class Api::V1::DungeonMaster::DungeonMasterController < ApplicationController
 
     def destroy 
 
-        dm = DungeonMaster.where(user_id: current_user.id, id: params[:id]).first
+        dm = ::DungeonMaster.where(user_id: current_user.id, id: params[:id]).first
 
         if (dm.nil?)
    

@@ -121,22 +121,7 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
 
         end
 
-        sorted_players = players
-
-        for i in 0..players.length
-
-            for j in 0..players.length
-
-                if (players[i] < players_to_change[j])
-
-                    sorted_players[i] = players_to_change[j]
-                    sorted_players[j] = players[i]
-
-                end
-
-            end
-
-        end
+        sorted_players =  players.sort_by { |s| s["iniciative"] }.reverse
 
         render json: { status: 'success', players: sorted_players }, status: 200
 
