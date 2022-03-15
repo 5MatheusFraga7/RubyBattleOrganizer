@@ -121,7 +121,7 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
 
         end
 
-        sorted_players =  players.sort_by { |s| s["iniciative"] }.reverse
+        sorted_players =  players.sort_by { |player| player["iniciative"] }.reverse
 
         render json: { status: 'success', players: sorted_players }, status: 200
 
