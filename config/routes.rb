@@ -19,7 +19,9 @@ Rails.application.routes.draw do
         get    'show_battle_fields'       => "dungeon_master#show_battle_fields"
         put    'update_battle_field/:id'  => "dungeon_master#update_battle_field"
         delete 'destroy_battle_field/:id' => "dungeon_master#destroy_battle_field"
-       
+ 
+        post 'to_sort_players'            => "dungeon_master#to_sort_players"
+        
         # Player
 
         post   'create_player'      => "dungeon_master#create_player"

@@ -108,6 +108,24 @@ module Api::V1::DungeonMaster::DungeonMasterBattlefield
         end
 
     end
+
+    def to_sort_players 
+
+        require 'json'
+        players =  JSON.parse(params[:players].to_json)
+
+        if ((players.nil?) || (players.count < 2)) 
+
+            render json: { status: 'must be more players' }, status: 422
+            return
+
+        end
+
+        sorted_players =  players.sort_by { |s| s["iniciative"] }.reverse
+
+        render json: { status: 'success', players: sorted_players }, status: 200
+
+    end
         
     private  
 
